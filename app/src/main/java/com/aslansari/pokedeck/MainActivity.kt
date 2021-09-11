@@ -1,29 +1,22 @@
 package com.aslansari.pokedeck
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.input.pointer.PointerEvent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.aslansari.pokedeck.network.Page
 import com.aslansari.pokedeck.network.PagedResponse
 import com.aslansari.pokedeck.network.PokemonService
 import com.aslansari.pokedeck.network.RetrofitClient
 import com.aslansari.pokedeck.pokemon.Pokemon
-import com.aslansari.pokedeck.pokemon.PokemonRepository
 import com.aslansari.pokedeck.ui.Deck
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.callbackFlow
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -45,13 +38,16 @@ class MainActivity : ComponentActivity() {
         scope.launch {
             val response:PagedResponse = service.getPokemonList()
             for (result in response.results) {
-                pokemonCards?.add(Pokemon(result.name.replaceFirstChar(Char::uppercase)))
+                val pokemon = service.getPokemon(result.url)
+                pokemonCards?.add(pokemon)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun DefaultPreview() {
     PokeDeckTheme {

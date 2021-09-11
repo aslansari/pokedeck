@@ -1,5 +1,6 @@
 package com.aslansari.pokedeck.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,19 +12,24 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.aslansari.pokedeck.R
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.aslansari.pokedeck.pokemon.Pokemon
-import com.aslansari.pokedeck.ui.theme.BlueGray50
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
 
 internal class PokemonProvider: PreviewParameterProvider<Pokemon> {
     override val values = sequenceOf(Pokemon(name = "Pikachu"))
 }
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Preview
 @Composable
 fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon) {
@@ -32,21 +38,28 @@ fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon) {
             modifier = Modifier.fillMaxWidth(),
             elevation = 1.dp,
             shape = RoundedCornerShape(4.dp),
-            backgroundColor = BlueGray50,
+            backgroundColor = MaterialTheme.colors.primary,
         ) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = rememberImagePainter(
+                        data = pokemon.sprites?.frontDefaultUrl,
+                        builder = {
+                            transformations(CircleCropTransformation())
+                        }
+                    ),
                     contentDescription = "",
-                    modifier = Modifier.weight(2f)
+                    modifier = Modifier.weight(2f).size(128.dp)
                 )
                 Text(
-                    text = pokemon.name,
-                    style = MaterialTheme.typography.h4,
-                    modifier = Modifier.padding(5.dp).weight(3f),
+                    text = pokemon.name.replaceFirstChar(Char::uppercase),
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .weight(3f),
                 )
             }
         }
