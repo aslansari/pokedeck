@@ -45,11 +45,11 @@ jobs:
       ## Sign our artifact##
       - name: Sign artifact
         id: sign_app
-        uses: r0adkll/sign-android-release@v1.0.1
+        uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/apk/release
-          alias: ${{ secrets.KEYALIAS }}
           signingKeyBase64: ${{ secrets.KEYSTORE }}
+          alias: ${{ secrets.KEYALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
