@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v2.2.0
         with:
           name: Release artifact
-          path: app/build/outputs/apk/release/app-artifact-*.apk
+          path: app/build/outputs/apk/release/app-release-*.apk
 
       - name: Create Release
         id: create_release
