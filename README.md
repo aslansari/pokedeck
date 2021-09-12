@@ -16,6 +16,11 @@ Poke Deck is a simple pokemon card application built with kotlin and jetpack com
 
 - [Pokemon API](https://pokeapi.co/docs/v2)
 
+## Design
+Screens are designed in Figma. 
+You can check out the design process of the screens by clicking the link below.
+**Note:** These designs may not be currently available in the app and can be regarded as upcoming designs
+[Figma link](https://www.figma.com/file/9Eseg6WpJiq4MDjekLTAyK/PokeDeck?node-id=442%3A91)
 
 ## Screenshots
 
