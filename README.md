@@ -19,7 +19,7 @@ Poke Deck is a simple pokemon card application built with kotlin and jetpack com
 
 ## Screenshots
 
-[App Screen](doc/images/main_screen.png)
+![App Screen](doc/images/main_screen.png)
 
 ## Feedback
 
