@@ -30,15 +30,15 @@ class MainActivity : ComponentActivity() {
                 Deck(pokeCards = pokemonCards!!)
             }
         }
-
-        val service = RetrofitClient.getClient().create(PokemonService::class.java)
+        val pokeDeckApp = application as PokeDeckApp
+        val pokemonViewModel = pokeDeckApp.appContainer.pokemonViewModel
 
         val scope = CoroutineScope(Dispatchers.Main)
 
         scope.launch {
-            val response:PagedResponse = service.getPokemonList()
+            val response:PagedResponse = pokemonViewModel.getPokemonList()
             for (result in response.results) {
-                val pokemon = service.getPokemon(result.url)
+                val pokemon = pokemonViewModel.getPokemon(result.url)
                 pokemonCards?.add(pokemon)
             }
         }
