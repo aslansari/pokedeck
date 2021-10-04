@@ -1,7 +1,7 @@
 package com.aslansari.pokedeck.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,7 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -27,15 +26,13 @@ internal class PokemonProvider: PreviewParameterProvider<Pokemon> {
 }
 
 @OptIn(ExperimentalCoilApi::class)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
-@Preview
 @Composable
-fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon) {
+fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon, onClick: (name: String) -> Unit) {
     PokeDeckTheme {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = { onClick(pokemon.name) }),
             elevation = 1.dp,
             shape = RoundedCornerShape(4.dp),
             backgroundColor = MaterialTheme.colors.primary,
@@ -52,7 +49,9 @@ fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon) {
                         }
                     ),
                     contentDescription = "",
-                    modifier = Modifier.weight(2f).size(128.dp)
+                    modifier = Modifier
+                        .weight(2f)
+                        .size(128.dp)
                 )
                 Text(
                     text = pokemon.name.replaceFirstChar(Char::uppercase),
@@ -66,16 +65,15 @@ fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon) {
     }
 }
 
-
 @Composable
-fun Deck(pokeCards: List<Pokemon>) {
+fun Deck(pokeCards: List<Pokemon>, onClick: (name: String) -> Unit) {
     LazyColumn (
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
     ){
         items(items = pokeCards) {
-            PokeCard(pokemon = it)
+            PokeCard(pokemon = it, onClick)
         }
     }
 }

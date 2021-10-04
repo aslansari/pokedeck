@@ -1,5 +1,6 @@
-package com.aslansari.pokedeck
+package com.aslansari.pokedeck.activity
 
+import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import com.aslansari.pokedeck.network.PagedResponse
+import com.aslansari.pokedeck.PokeDeckApp
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.ui.Deck
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
@@ -23,7 +24,12 @@ class MainActivity : ComponentActivity() {
             PokeDeckTheme {
                 // A surface container using the 'background' color from the theme
                 pokemonCards = remember { mutableStateListOf() }
-                Deck(pokeCards = pokemonCards!!)
+                Deck(pokeCards = pokemonCards!!, onClick = {
+                    val intent = Intent(this, PokemonActivity::class.java).apply {
+                        putExtra("name", it)
+                    }
+                    startActivity(intent)
+                })
             }
         }
         val pokeDeckApp = application as PokeDeckApp
@@ -49,6 +55,6 @@ fun DefaultPreview() {
             add(Pokemon("Charmander"))
             add(Pokemon("Bulbasaur"))
         }
-        Deck(pokeCards = pokemonCards)
+        Deck(pokeCards = pokemonCards, onClick = {})
     }
 }
