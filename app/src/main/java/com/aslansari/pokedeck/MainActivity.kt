@@ -9,14 +9,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import com.aslansari.pokedeck.network.PagedResponse
-import com.aslansari.pokedeck.network.PokemonService
-import com.aslansari.pokedeck.network.RetrofitClient
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.ui.Deck
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : ComponentActivity() {
 
@@ -36,11 +32,7 @@ class MainActivity : ComponentActivity() {
         val scope = CoroutineScope(Dispatchers.Main)
 
         scope.launch {
-            val response:PagedResponse = pokemonViewModel.getPokemonList()
-            for (result in response.results) {
-                val pokemon = pokemonViewModel.getPokemon(result.url)
-                pokemonCards?.add(pokemon)
-            }
+            pokemonCards?.addAll(pokemonViewModel.getPokemonList())
         }
     }
 }
