@@ -1,37 +1,35 @@
 package com.aslansari.pokedeck.activity
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
+import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.aslansari.pokedeck.PokeDeckApp
 import com.aslansari.pokedeck.pokemon.Pokemon
-import com.aslansari.pokedeck.ui.PokeCard
-import com.aslansari.pokedeck.ui.PokemonProvider
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
-import kotlinx.coroutines.runBlocking
+import com.aslansari.pokedeck.viewmodel.PokemonViewModel
+import com.aslansari.pokedeck.viewmodel.PokemonViewModelFactory
+import kotlinx.coroutines.flow.collect
 
 class PokemonActivity : ComponentActivity() {
+
+    private val pokemonViewModel: PokemonViewModel by viewModels(factoryProducer = {
+        PokemonViewModelFactory((application as PokeDeckApp).pokemonRepository)
+    })
+
     lateinit var pokeName: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +49,7 @@ class PokemonActivity : ComponentActivity() {
                 ) {
                     Image(
                         painter = rememberImagePainter(
-                            data = pokemon?.sprites?.frontDefaultUrl,
+                            data = pokemon?.frontDefaultUrl,
                             builder = {
                                 transformations(CircleCropTransformation())
                             }
@@ -70,7 +68,7 @@ class PokemonActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
                     ){
-                        val abilityList: List<String> = pokemon?.abilities?.map { it.ability.name } ?: listOf()
+                        val abilityList: List<String> = pokemon?.abilities?.map { it.name } ?: listOf()
                         items(items = abilityList) {
                             Text(
                                 text = it,
@@ -84,11 +82,14 @@ class PokemonActivity : ComponentActivity() {
             }
         }
 
-        val pokeDeckApp = application as PokeDeckApp
-        val pokemonViewModel = pokeDeckApp.appContainer.pokemonViewModel
-        runBlocking {
-            pokemon = pokemonViewModel.getPokemonList().single {
-                it.name == pokeName
+        lifecycleScope.launchWhenStarted {
+            pokemonViewModel.getPokemonList()
+            pokemonViewModel.pokemonFlow.collect {
+                if (it.isError.not().and(it.isLoading.not())) {
+                    it.pokemonList.single { pokemon ->
+                        pokemon.name == pokeName
+                    }
+                }
             }
         }
     }

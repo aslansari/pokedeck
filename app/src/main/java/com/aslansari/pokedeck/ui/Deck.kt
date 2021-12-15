@@ -19,10 +19,11 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.aslansari.pokedeck.pokemon.Pokemon
+import com.aslansari.pokedeck.pokemon.dto.PokemonDTO
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
 
-internal class PokemonProvider: PreviewParameterProvider<Pokemon> {
-    override val values = sequenceOf(Pokemon(name = "Pikachu"))
+internal class PokemonProvider: PreviewParameterProvider<PokemonDTO> {
+    override val values = sequenceOf(PokemonDTO(name = "Pikachu"))
 }
 
 @OptIn(ExperimentalCoilApi::class)
@@ -43,7 +44,7 @@ fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon, onClic
             ) {
                 Image(
                     painter = rememberImagePainter(
-                        data = pokemon.sprites?.frontDefaultUrl,
+                        data = pokemon.frontDefaultUrl,
                         builder = {
                             transformations(CircleCropTransformation())
                         }
