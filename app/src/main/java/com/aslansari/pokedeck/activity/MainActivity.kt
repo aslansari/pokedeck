@@ -1,15 +1,12 @@
 package com.aslansari.pokedeck.activity
 
 import android.content.Intent
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.coroutineScope
 import com.aslansari.pokedeck.PokeDeckApp
 import com.aslansari.pokedeck.pokemon.Pokemon
@@ -41,7 +38,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
         lifecycle.coroutineScope.launchWhenStarted {
             pokemonViewModel.pokemonFlow.collect {
                 if (it.isError.not().and(it.isLoading.not())) {
@@ -50,21 +46,5 @@ class MainActivity : ComponentActivity() {
             }
         }
         pokemonViewModel.getPokemonList()
-    }
-}
-
-@Preview(
-    showBackground = true,
-    uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun DefaultPreview() {
-    PokeDeckTheme {
-        val pokemonCards = mutableListOf<Pokemon>()
-        pokemonCards.apply {
-            add(Pokemon("Pikachu"))
-            add(Pokemon("Charmander"))
-            add(Pokemon("Bulbasaur"))
-        }
-        Deck(pokeCards = pokemonCards, onClick = {})
     }
 }

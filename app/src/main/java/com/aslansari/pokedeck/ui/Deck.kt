@@ -12,23 +12,23 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.aslansari.pokedeck.pokemon.Pokemon
-import com.aslansari.pokedeck.pokemon.dto.PokemonDTO
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
 
-internal class PokemonProvider: PreviewParameterProvider<PokemonDTO> {
-    override val values = sequenceOf(PokemonDTO(name = "Pikachu"))
+@Preview
+@Composable
+fun PokeCardPreview() {
+    PokeCard(pokemon = Pokemon(name = "Charmander"), onClick = {})
 }
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon, onClick: (name: String) -> Unit) {
+fun PokeCard (pokemon: Pokemon, onClick: (name: String) -> Unit) {
     PokeDeckTheme {
         Card(
             modifier = Modifier
@@ -66,6 +66,12 @@ fun PokeCard (@PreviewParameter(PokemonProvider::class) pokemon: Pokemon, onClic
     }
 }
 
+@Preview
+@Composable
+fun DeckPreview() {
+    Deck(pokeCards = getFakePokemonData(), onClick = {})
+}
+
 @Composable
 fun Deck(pokeCards: List<Pokemon>, onClick: (name: String) -> Unit) {
     LazyColumn (
@@ -77,6 +83,16 @@ fun Deck(pokeCards: List<Pokemon>, onClick: (name: String) -> Unit) {
             PokeCard(pokemon = it, onClick)
         }
     }
+}
+
+fun getFakePokemonData(): MutableList<Pokemon> {
+    val pokemons = mutableListOf<Pokemon>()
+    pokemons.apply {
+        add(Pokemon("Pikachu"))
+        add(Pokemon("Charmander"))
+        add(Pokemon("Bulbasaur"))
+    }
+    return pokemons
 }
 
 
