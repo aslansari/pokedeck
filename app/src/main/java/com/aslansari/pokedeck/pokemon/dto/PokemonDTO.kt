@@ -1,19 +1,20 @@
 package com.aslansari.pokedeck.pokemon.dto
 
-import com.aslansari.pokedeck.pokemon.dto.Sprites
-import com.aslansari.pokedeck.pokemon.model.NamedAPIResource
 import com.google.gson.annotations.SerializedName
 
 data class PokemonDTO(
+    @SerializedName("id")
     val id: Int,
+    @SerializedName("name")
     val name: String,
     @SerializedName("base_experience")
     val baseExperience: Int,
+    @SerializedName("height")
     val height: Int,
     @SerializedName("is_default")
     val isDefault: Boolean,
+    @SerializedName("weight")
     val weight: Int,
+    @SerializedName("sprites")
     val sprites: Sprites?
-) {
-    constructor(name: String) : this(name = name, id = 0, baseExperience = 0, height = 0, isDefault = false, weight = 0, sprites = null)
-}
+)

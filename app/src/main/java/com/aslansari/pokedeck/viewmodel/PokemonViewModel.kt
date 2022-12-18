@@ -12,7 +12,6 @@ import com.aslansari.pokedeck.di.PokeDispatchers
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.repository.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hilt_aggregated_deps._com_aslansari_pokedeck_viewmodel_PokemonViewModel_HiltModules_KeyModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

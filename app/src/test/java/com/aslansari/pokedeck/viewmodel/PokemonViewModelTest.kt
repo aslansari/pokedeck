@@ -1,8 +1,6 @@
 package com.aslansari.pokedeck.viewmodel
 
-import com.aslansari.pokedeck.network.PagedResponse
-import com.aslansari.pokedeck.network.PokemonService
-import com.aslansari.pokedeck.network.Result
+import com.aslansari.pokedeck.network.*
 import com.aslansari.pokedeck.pokemon.dto.PokemonDTO
 import com.aslansari.pokedeck.pokemon.dto.Sprites
 import com.aslansari.pokedeck.repository.PokemonRepository
@@ -38,7 +36,7 @@ class PokemonViewModelTest {
     fun setup() {
 
         pokemonService = mock {
-            onBlocking { getPokemonList() } doReturn PagedResponse(1,"","", fakePokemonList())
+            onBlocking { getPokemonList() } doReturn PokemonListResponse(1,"","", fakePokemonList())
             onBlocking { getPokemon(anyString()) } doReturn fakePokemon().copy(name = "bulbasaur")
         }
 
@@ -46,10 +44,10 @@ class PokemonViewModelTest {
         viewModel = PokemonViewModel(mainCoroutineRule.testDispatcher, pokemonRepository)
     }
 
-    private fun fakePokemonList(): List<Result> {
-        val pokemonList = mutableListOf<Result>()
-        pokemonList.add(Result("bulbasaur","https://pokeapi.co/api/v2/pokemon/1/"))
-        pokemonList.add(Result("ivysaur","https://pokeapi.co/api/v2/pokemon/2/"))
+    private fun fakePokemonList(): List<PokemonSummaryDTO> {
+        val pokemonList = mutableListOf<PokemonSummaryDTO>()
+        pokemonList.add(PokemonSummaryDTO("bulbasaur","https://pokeapi.co/api/v2/pokemon/1/"))
+        pokemonList.add(PokemonSummaryDTO("ivysaur","https://pokeapi.co/api/v2/pokemon/2/"))
         return pokemonList
     }
 

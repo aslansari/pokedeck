@@ -3,14 +3,10 @@
 package com.aslansari.pokedeck.feature.pokemon
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -20,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.aslansari.pokedeck.ui.Deck
 import com.aslansari.pokedeck.ui.PokeCard
 import com.aslansari.pokedeck.viewmodel.PokemonListUIEvent
 import com.aslansari.pokedeck.viewmodel.PokemonListUIState
@@ -67,10 +62,18 @@ private fun Content(
                 )
             }
         } else {
-            Deck(
-                pokemonList = uiState.pokemonList,
-                onClick = onClick
-            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(8.dp),
+            ) {
+                items(count = uiState.pokemonList.size) { index ->
+                    PokeCard(
+                        modifier = Modifier.padding(8.dp),
+                        pokemon = uiState.pokemonList[index],
+                        onClick = onClick
+                    )
+                }
+            }
         }
     }
 }

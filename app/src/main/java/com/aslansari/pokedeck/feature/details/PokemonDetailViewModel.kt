@@ -1,5 +1,6 @@
 package com.aslansari.pokedeck.feature.details
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.SavedStateHandle
 import com.aslansari.pokedeck.arch.ui.BaseViewModel
 import com.aslansari.pokedeck.arch.ui.UIEvent
@@ -20,6 +21,7 @@ class PokemonDetailViewModel @Inject constructor(
     }
 }
 
+@Stable
 data class PokemonDetailUIState(
     val loading: Boolean = false,
     val name: String = "",

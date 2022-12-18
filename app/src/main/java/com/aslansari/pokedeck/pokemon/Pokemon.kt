@@ -1,5 +1,8 @@
 package com.aslansari.pokedeck.pokemon
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Pokemon(
     val name: String,
     val experience: Int = 0,
