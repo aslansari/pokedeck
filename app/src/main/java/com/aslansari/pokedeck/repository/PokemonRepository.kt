@@ -7,14 +7,12 @@ import javax.inject.Inject
 class PokemonRepository @Inject constructor(
     private val client: PokemonService
 ) {
-    private val pokemonListCache: MutableList<PokemonDTO> = mutableListOf()
 
-    suspend fun getPokemonList(): List<PokemonDTO> {
-        if (pokemonListCache.isEmpty()) {
-            val response = client.getPokemonList()
-            for (result in response.results) {
-                pokemonListCache.add(client.getPokemon(result.url))
-            }
+    suspend fun getPokemonList(limit: Int, offset: Int): List<PokemonDTO> {
+        val pokemonListCache: MutableList<PokemonDTO> = mutableListOf()
+        val response = client.getPokemonList(limit = limit, offset = offset)
+        for (result in response.results) {
+            pokemonListCache.add(client.getPokemon(result.url))
         }
         return pokemonListCache
     }

@@ -1,5 +1,6 @@
 package com.aslansari.pokedeck.pokemon.dto
 
+import com.aslansari.pokedeck.pokemon.Pokemon
 import com.google.gson.annotations.SerializedName
 
 data class PokemonDTO(
@@ -18,3 +19,13 @@ data class PokemonDTO(
     @SerializedName("sprites")
     val sprites: Sprites?
 )
+
+fun PokemonDTO.toModel(): Pokemon {
+    return Pokemon(
+        this.name,
+        this.baseExperience,
+        level = 0,
+        frontDefaultUrl = this.sprites!!.frontDefaultUrl,
+        abilities = listOf()
+    )
+}

@@ -90,7 +90,7 @@ object RemoteModule {
         }
 
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-            .cache(cache)
+//            .cache(cache)
             .addInterceptor(chuckerInterceptor)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(20, TimeUnit.SECONDS)
