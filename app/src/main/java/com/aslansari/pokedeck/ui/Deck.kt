@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -26,23 +28,26 @@ fun PokeCardPreview() {
     PokeCard(pokemon = Pokemon(name = "Charmander"), onClick = {})
 }
 
-@OptIn(ExperimentalCoilApi::class)
 @Composable
-fun PokeCard (pokemon: Pokemon, onClick: (name: String) -> Unit) {
+fun PokeCard (
+    modifier: Modifier = Modifier,
+    pokemon: Pokemon,
+    onClick: (name: String) -> Unit
+) {
     PokeDeckTheme {
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .clickable(onClick = { onClick(pokemon.name) }),
             elevation = 1.dp,
-            shape = RoundedCornerShape(4.dp),
-            backgroundColor = MaterialTheme.colors.primary,
+            shape = RoundedCornerShape(16.dp),
         ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Image(
+                    modifier = Modifier.size(128.dp),
                     painter = rememberImagePainter(
                         data = pokemon.frontDefaultUrl,
                         builder = {
@@ -50,16 +55,11 @@ fun PokeCard (pokemon: Pokemon, onClick: (name: String) -> Unit) {
                         }
                     ),
                     contentDescription = "",
-                    modifier = Modifier
-                        .weight(2f)
-                        .size(128.dp)
                 )
                 Text(
+                    modifier = Modifier.padding(5.dp),
                     text = pokemon.name.replaceFirstChar(Char::uppercase),
                     style = MaterialTheme.typography.h5,
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .weight(3f),
                 )
             }
         }
@@ -69,18 +69,24 @@ fun PokeCard (pokemon: Pokemon, onClick: (name: String) -> Unit) {
 @Preview
 @Composable
 fun DeckPreview() {
-    Deck(pokeCards = getFakePokemonData(), onClick = {})
+    Deck(pokemonList = getFakePokemonData(), onClick = {})
 }
 
 @Composable
-fun Deck(pokeCards: List<Pokemon>, onClick: (name: String) -> Unit) {
-    LazyColumn (
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp)
-    ){
-        items(items = pokeCards) {
-            PokeCard(pokemon = it, onClick)
+fun Deck(
+    pokemonList: List<Pokemon>,
+    onClick: (name: String) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp),
+    ) {
+        items(count = pokemonList.size) { index ->
+            PokeCard(
+                modifier = Modifier.padding(8.dp),
+                pokemon = pokemonList[index],
+                onClick = onClick
+            )
         }
     }
 }
