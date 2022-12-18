@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -42,6 +43,17 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+            buildConfigField "String", "API_BASE_URL", "\"http://192.168.1.21:8001/\""
+        }
+        prod {
+            dimension "version"
+            buildConfigField "String", "API_BASE_URL", "\"https://pokeapi.co/api/v2/\""
         }
     }
 
