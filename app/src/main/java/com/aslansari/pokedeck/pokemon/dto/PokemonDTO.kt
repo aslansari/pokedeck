@@ -1,6 +1,7 @@
 package com.aslansari.pokedeck.pokemon.dto
 
 import com.aslansari.pokedeck.pokemon.Pokemon
+import com.aslansari.pokedeck.pokemon.PokemonStat
 import com.google.gson.annotations.SerializedName
 
 data class PokemonDTO(
@@ -17,7 +18,9 @@ data class PokemonDTO(
     @SerializedName("weight")
     val weight: Int,
     @SerializedName("sprites")
-    val sprites: Sprites?
+    val sprites: Sprites?,
+    @SerializedName("stats")
+    val stats: List<StatDTO>,
 )
 
 fun PokemonDTO.toModel(): Pokemon {
@@ -26,6 +29,7 @@ fun PokemonDTO.toModel(): Pokemon {
         this.baseExperience,
         level = 0,
         frontDefaultUrl = this.sprites!!.frontDefaultUrl,
-        abilities = listOf()
+        abilities = listOf(),
+        stats = this.stats.map { PokemonStat(it.detail.name, it.baseStat) }
     )
 }

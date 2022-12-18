@@ -12,16 +12,20 @@ class PokemonRepository @Inject constructor(
         val pokemonListCache: MutableList<PokemonDTO> = mutableListOf()
         val response = client.getPokemonList(limit = limit, offset = offset)
         for (result in response.results) {
-            pokemonListCache.add(client.getPokemon(result.url))
+            pokemonListCache.add(client.getPokemonById(result.url))
         }
         return pokemonListCache
     }
 
     suspend fun getPokemon(url: String): PokemonDTO {
-        return client.getPokemon(url = url)
+        return client.getPokemonById(url = url)
     }
 
-    suspend fun getPokemon(id: Int) = client.getPokemon(id)
+    suspend fun getPokemonByName(name: String): PokemonDTO {
+        return client.getPokemonByName(name)
+    }
+
+    suspend fun getPokemon(id: Int) = client.getPokemonById(id)
 
     suspend fun getAbility(id: Int) = client.getAbility(id)
 

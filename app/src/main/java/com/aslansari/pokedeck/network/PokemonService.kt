@@ -16,10 +16,13 @@ interface PokemonService {
     ): PokemonListResponse
 
     @GET()
-    suspend fun getPokemon(@Url url: String): PokemonDTO
+    suspend fun getPokemonById(@Url url: String): PokemonDTO
 
     @GET("pokemon/{id}")
-    suspend fun getPokemon(@Path("id") id: Int): PokemonDTO
+    suspend fun getPokemonById(@Path("id") id: Int): PokemonDTO
+
+    @GET("pokemon/{name}")
+    suspend fun getPokemonByName(@Path("name") name: String): PokemonDTO
 
     @GET("ability/{id}")
     suspend fun getAbility(@Path("id") id: Int): Ability

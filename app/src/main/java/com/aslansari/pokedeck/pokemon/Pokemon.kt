@@ -8,5 +8,11 @@ data class Pokemon(
     val experience: Int = 0,
     val level: Int = 0,
     val abilities : List<Ability> = listOf(),
+    val stats: List<PokemonStat> = listOf(),
     val frontDefaultUrl: String = "",
+)
+
+data class PokemonStat(
+    val name: String,
+    val stat: Int,
 )
