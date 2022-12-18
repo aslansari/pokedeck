@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aslansari.pokedeck.feature.details.PokemonDetailScreen
 import com.aslansari.pokedeck.feature.pokemon.PokemonListScreen
 
 @Composable
@@ -22,6 +23,14 @@ fun MainNavGraph(
     ) {
         composable(NavScreen.PokemonList.route) {
             PokemonListScreen(
+                viewModel = hiltViewModel(),
+                navigateToDetails = { pokemonName ->
+                    navController.navigate(NavScreen.PokemonDetail.route.plus("/$pokemonName"))
+                }
+            )
+        }
+        composable(NavScreen.PokemonDetail.routeWithArgs) {
+            PokemonDetailScreen(
                 viewModel = hiltViewModel(),
             )
         }

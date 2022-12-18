@@ -12,6 +12,7 @@ import com.aslansari.pokedeck.di.PokeDispatchers
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.repository.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import hilt_aggregated_deps._com_aslansari_pokedeck_viewmodel_PokemonViewModel_HiltModules_KeyModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -69,7 +70,7 @@ class PokemonViewModel @Inject constructor(
     }
 
     fun onPokemonClick(pokemonName: String) {
-
+        setEvent(PokemonListUIEvent.NavigateToDetails(pokemonName))
     }
 }
 
@@ -79,4 +80,6 @@ data class PokemonListUIState(
     val pokemonList: List<Pokemon> = listOf()
 ) : UIState
 
-sealed interface PokemonListUIEvent : UIEvent
+sealed interface PokemonListUIEvent : UIEvent {
+    data class NavigateToDetails(val pokemonId: String) : PokemonListUIEvent
+}
