@@ -7,20 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.coroutineScope
-import com.aslansari.pokedeck.PokeDeckApp
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.ui.Deck
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
 import com.aslansari.pokedeck.viewmodel.PokemonViewModel
-import com.aslansari.pokedeck.viewmodel.PokemonViewModelFactory
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val pokemonViewModel: PokemonViewModel by viewModels(factoryProducer = {
-        PokemonViewModelFactory((application as PokeDeckApp).pokemonRepository)
-    })
+    private val pokemonViewModel: PokemonViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

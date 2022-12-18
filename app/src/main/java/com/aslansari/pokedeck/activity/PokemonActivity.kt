@@ -17,18 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
-import com.aslansari.pokedeck.PokeDeckApp
 import com.aslansari.pokedeck.pokemon.Pokemon
 import com.aslansari.pokedeck.ui.theme.PokeDeckTheme
 import com.aslansari.pokedeck.viewmodel.PokemonViewModel
-import com.aslansari.pokedeck.viewmodel.PokemonViewModelFactory
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PokemonActivity : ComponentActivity() {
 
-    private val pokemonViewModel: PokemonViewModel by viewModels(factoryProducer = {
-        PokemonViewModelFactory((application as PokeDeckApp).pokemonRepository)
-    })
+    private val pokemonViewModel: PokemonViewModel by viewModels()
 
     lateinit var pokeName: String
     override fun onCreate(savedInstanceState: Bundle?) {
