@@ -1,18 +1,18 @@
 package com.aslansari.pokedeck.repository
 
-import com.aslansari.pokedeck.network.PagedResponse
 import com.aslansari.pokedeck.network.PokemonService
 import com.aslansari.pokedeck.pokemon.dto.PokemonDTO
+import javax.inject.Inject
 
-class PokemonRepository(private val client: PokemonService) {
-    private val pokemonListCache: MutableList<PokemonDTO> = mutableListOf()
+class PokemonRepository @Inject constructor(
+    private val client: PokemonService
+) {
 
-    suspend fun getPokemonList(): List<PokemonDTO> {
-        if (pokemonListCache.isEmpty()) {
-            val response:PagedResponse = client.getPokemonList()
-            for (result in response.results) {
-                pokemonListCache.add(client.getPokemon(result.url))
-            }
+    suspend fun getPokemonList(limit: Int, offset: Int): List<PokemonDTO> {
+        val pokemonListCache: MutableList<PokemonDTO> = mutableListOf()
+        val response = client.getPokemonList(limit = limit, offset = offset)
+        for (result in response.results) {
+            pokemonListCache.add(client.getPokemon(result.url))
         }
         return pokemonListCache
     }

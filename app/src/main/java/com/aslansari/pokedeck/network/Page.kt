@@ -1,5 +1,21 @@
 package com.aslansari.pokedeck.network
 
-data class PagedResponse (val count:Int, val next:String, val previous:String, val results: List<Result>)
+import com.google.gson.annotations.SerializedName
 
-data class Result (val name:String, val url:String)
+data class PokemonListResponse(
+    @SerializedName("count")
+    val count: Int,
+    @SerializedName("next")
+    val next: String,
+    @SerializedName("previous")
+    val previous: String,
+    @SerializedName("results")
+    val results: List<PokemonSummaryDTO>
+)
+
+data class PokemonSummaryDTO(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("url")
+    val url: String,
+)
